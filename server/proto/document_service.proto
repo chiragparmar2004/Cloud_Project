@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package document;
+
+service DocumentService {
+    rpc CreateDocument (CreateDocumentRequest) returns (CreateDocumentResponse);
+    rpc JoinDocument (JoinDocumentRequest) returns (JoinDocumentResponse);
+    rpc EditDocument (stream EditDocumentRequest) returns (stream EditDocumentResponse);
+    rpc AddEditorStream (AddEditorStreamRequest) returns (AddEditorStreamResponse); // New RPC
+}
+
+message CreateDocumentRequest {
+    string user_id = 1;
+    string title = 2;
+    string initial_content = 3;
+}
+
+message CreateDocumentResponse {
+    string document_id = 1;
+    string message = 2;
+}
+
+message JoinDocumentRequest {
+    string user_id = 1;
+    string document_id = 2;
+}
+
+message JoinDocumentResponse {
+    string document_id = 1;
+    string title = 2;
+    string content = 3;
+}
+
+message EditDocumentRequest {
+    string user_id = 1;
+    string document_id = 2;
+    string content_change = 3;
+    string timestamp = 4; // Can be used to manage time-based updates
+}
+
+message EditDocumentResponse {
+    string document_id = 1;
+    string user_id = 2;
+    string updated_content = 3;
+    string timestamp = 4;
+}
+
+message AddEditorStreamRequest {
+    string user_id = 1; // ID of the user to be added
+    string document_id = 2; // ID of the document to which the user is added
+}
+
+message AddEditorStreamResponse {
+    string message = 1; // Confirmation or error message
+}
